@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz 20.º aniversário, Isabella! 🎂</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;min-height:100vh;display:flex;align-items:center;
+justify-content:center;text-align:center;padding:22px;
+font-family:Arial,sans-serif;color:#fff;
+background:linear-gradient(135deg,#ff79ae,#a18aff,#67d9ed);
+overflow-x:hidden
+}
+.card{width:100%;max-width:480px;background:#ffffff25;
+border:1px solid #ffffff70;border-radius:28px;padding:28px 20px;
+box-shadow:0 15px 45px #55225b40;backdrop-filter:blur(8px)}
+h1{font-size:clamp(27px,7vw,39px);margin:5px 0 12px}
+p{line-height:1.7}
+.heart{font-size:48px;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.15)}}
+.envelope{position:relative;width:210px;height:140px;
+margin:35px auto 20px;background:#ffca70;border-radius:8px;
+cursor:pointer;perspective:600px;box-shadow:0 8px 20px #40204b35}
+.envelope:before{content:"";position:absolute;inset:0;
+background:#ffdf9f;clip-path:polygon(0 0,50% 55%,100% 0)}
+.flap{position:absolute;inset:0;background:#ffae59;
+clip-path:polygon(0 0,100% 0,50% 58%);
+transform-origin:top;transition:transform .7s;z-index:3}
+.letter{position:absolute;left:10px;right:10px;bottom:5px;
+height:110px;padding:12px 5px;color:#8a3565;background:white;
+border-radius:8px;transition:transform .8s;z-index:1}
+.envelope.open .flap{transform:rotateX(180deg)}
+.envelope.open .letter{transform:translateY(-95px)}
+button{border:0;border-radius:25px;padding:13px 18px;
+margin:7px;font-size:15px;font-weight:bold;cursor:pointer;
+background:#fff;color:#8b3b86;box-shadow:0 4px 12px #54264b30}
+button:active{transform:scale(.96)}
+.message{display:none;background:#fff;color:#743a72;
+border-radius:20px;padding:20px;margin-top:22px;animation:appear .8s}
+.message.show{display:block}
+@keyframes appear{from{opacity:0;transform:translateY(15px)}
+to{opacity:1;transform:translateY(0)}}
+#confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.piece{position:absolute;top:-20px;width:9px;height:13px;
+animation:fall 3s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+footer{font-size:12px;margin-top:22px;color:#fff}
+</style>
+</head>
+<body>
+<div id="confetti"></div>
+<main class="card">
+<div class="heart">💖</div>
+<h1>Feliz 20.º aniversário!</h1>
+<p>Hoje o universo brilha um bocadinho mais por tua causa, Isabella! ✨</p>
+
+<div class="envelope" id="env" onclick="abrir()"
+role="button" aria-label="Abrir carta de aniversário">
+<div class="letter">💌<br>Uma carta especial para ti...</div>
+<div class="flap"></div>
+</div>
+<p id="hint">👆 Toca no envelope para abrir a tua surpresa!</p>
+
+<div class="message" id="msg">
+<h2>🎂 Querida Isabella! 🎂</h2>
+<p>Parabéns pelos teus 20 anos! 🥳💗</p>
+<p>Que esta nova etapa da tua vida seja cheia de saúde, amor, paz, coragem e grandes conquistas. Que nunca te faltem motivos para sorrir, sonhos para realizar e pessoas que te queiram bem.</p>
+<p>Continua a brilhar, a acreditar em ti e a lutar por tudo aquilo que desejas. Que cada dia te traga novas oportunidades e momentos inesquecíveis!</p>
+<p><strong>Feliz aniversário! Que a vida te sorria hoje e sempre! 💕🌷</strong></p>
+<p>Recebe um abraço enorme, cheio de carinho, de quem te deseja tudo de bom. ❤️</p>
+<div style="font-size:35px">🎁🎈🌸🥂🎉</div>
+</div>
+
+<button onclick="abrir()">💌 Abrir a carta</button>
+<button onclick="confetes()">🎉 Mais confetes</button>
+<button onclick="musica()" id="music">🎵 Tocar música</button>
+<footer>Feito com muito carinho, especialmente para Isabella 💗</footer>
+</main>
+<script>
+let aberta=false,ctx=null,melodia=null;
+function abrir(){
+document.getElementById('env').classList.add('open');
+document.getElementById('msg').classList.add('show');
+document.getElementById('hint').textContent='✨ Uma surpresa feita especialmente para ti!';
+if(!aberta){aberta=true;confetes()}
+}
+function confetes(){
+const area=document.getElementById('confetti');
+const cores=['#ffdf70','#ff4f9a','#8affc1','#ffffff','#8e7bff','#ff8d57'];
+for(let i=0;i<85;i++){
+let p=document.createElement('span');p.className='piece';
+p.style.left=Math.random()*100+'%';
+p.style.background=cores[Math.floor(Math.random()*cores.length)];
+p.style.animationDelay=Math.random()*1.5+'s';
+p.style.animationDuration=(2+Math.random()*2)+'s';
+area.appendChild(p);setTimeout(()=>p.remove(),5000)
+}}
+function musica(){
+if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();
+if(ctx.state==='suspended')ctx.resume();
+if(melodia){clearInterval(melodia);melodia=null;
+document.getElementById('music').textContent='🎵 Tocar música';return}
+let notas=[523,523,587,523,698,659,523,523,587,523,784,698];
+let i=0;
+function tocar(){
+let o=ctx.createOscillator(),g=ctx.createGain();
+o.type='sine';o.frequency.value=notas[i%notas.length];
+g.gain.setValueAtTime(.0001,ctx.currentTime);
+g.gain.exponentialRampToValueAtTime(.12,ctx.currentTime+.03);
+g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.32);
+o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+.34);i++
+}
+tocar();melodia=setInterval(tocar,380);
+document.getElementById('music').textContent='⏸️ Parar música'
+}
+</script>
+</body>
+  </html>me
